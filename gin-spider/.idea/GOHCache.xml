@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GoORMHelperCache">
+    <option name="schemaMapping">
+      <map>
+        <entry key="LoginService">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/service/login.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="QueryService">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/service/query.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="SemesterInfo">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/model/SemesterInfo.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="Stuscore">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/model/Stuscore.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="semesterList">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/service/query.go" />
+            </set>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="scannedPathMapping">
+      <map>
+        <entry key="file://$PROJECT_DIR$/dao/login.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1709376510803" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/main.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1710576214992" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/cors.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1710667043027" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/model/SemesterInfo.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1710649719162" />
+              <option name="schema">
+                <list>
+                  <option value="SemesterInfo" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/model/Stuscore.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1710651621995" />
+              <option name="schema">
+                <list>
+                  <option value="Stuscore" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/model/init.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1708059960528" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/model/initColly.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1710657365253" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/router/router.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1710667186078" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/service/login.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1709737912759" />
+              <option name="schema">
+                <list>
+                  <option value="LoginService" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/service/query.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1710677447267" />
+              <option name="schema">
+                <list>
+                  <option value="QueryService" />
+                  <option value="semesterList" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="tableStructMapping">
+      <map>
+        <entry key="login_service" value="LoginService" />
+        <entry key="query_service" value="QueryService" />
+        <entry key="semester_info" value="SemesterInfo" />
+        <entry key="semester_list" value="semesterList" />
+        <entry key="stuscore" value="Stuscore" />
+      </map>
+    </option>
+    <option name="lastTimeChecked" value="1710681613001" />
+  </component>
+</project>

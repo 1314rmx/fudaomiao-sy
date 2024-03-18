@@ -1,0 +1,3 @@
+{
+  "text": ["controller","cmd","conf","dao","global","log","middleware","model","router","service","utils"]
+}
