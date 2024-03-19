@@ -123,7 +123,7 @@
         <entry key="file://$PROJECT_DIR$/service/query.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1710835347846" />
+              <option name="lastModified" value="1710852808257" />
               <option name="schema">
                 <list>
                   <option value="QueryService" />

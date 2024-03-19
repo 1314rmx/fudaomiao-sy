@@ -35,7 +35,7 @@ func (query QueryService) GetScoreList(context *gin.Context) {
 		"code":     200,
 		"msg":      "获取成绩成功!",
 		"semester": semesters,
-		"data":     score,
+		"data":     score.Items,
 	})
 }
 
