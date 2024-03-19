@@ -49,7 +49,6 @@ func getSemester(context *gin.Context, semestersChan chan []semesterList, infoCh
 	c := model.Collector.Clone()
 	c.AllowURLRevisit = true
 	c.OnResponse(func(r *colly.Response) {
-		fmt.Println(r.Request.URL)
 		err := json.Unmarshal(r.Body, &semesterInfo)
 		if err != nil {
 			context.JSON(200, gin.H{
@@ -57,13 +56,13 @@ func getSemester(context *gin.Context, semestersChan chan []semesterList, infoCh
 				"data": nil,
 				"msg":  "获取学期信息失败!",
 			})
+			wg.Done()
 			context.Abort()
 			return
 		}
 	})
 	info_url := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xsxxxggl/xsxxwh_cxCkDgxsxx.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=N100801"
 	c.Visit(info_url)
-	fmt.Println(semesterInfo)
 	xz, _ := strconv.Atoi(semesterInfo.Xz)
 	njdmID, _ := strconv.Atoi(semesterInfo.NjdmID)
 	now := time.Now()
@@ -75,7 +74,6 @@ func getSemester(context *gin.Context, semestersChan chan []semesterList, infoCh
 	if now.Month() < 7 {
 		pastyearnum = pastyearnum*2 - 1
 	}
-	fmt.Println("pastyearnum", pastyearnum)
 	var semesters = make([]semesterList, pastyearnum)
 	for i := 0; i < pastyearnum; i++ {
 		if i%2 == 0 {
@@ -108,18 +106,15 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 		schoolyear = strconv.Itoa(year)
 	}
 	termName := context.DefaultQuery("termName", "-1")
-	fmt.Println(termName)
 	if !strings.Contains(termName, "-1") {
 		split_name := strings.Split(termName, "-")
 		schoolyear = split_name[0]
-		fmt.Println("学期：" + schoolyear)
 		if strings.Contains(split_name[1], "一") {
 			semester = "1"
 		} else {
 			semester = "2"
 		}
 	}
-	fmt.Println(semester)
 	if semester == "1" {
 		semester = "3"
 	} else if semester == "2" {
@@ -130,7 +125,9 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 			"data": nil,
 			"msg":  "参数错误",
 		})
+		wg.Done()
 		context.Abort()
+		return
 	}
 	//访问成绩查询
 	cjurl := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/cjcx/cjcx_cxXsgrcj.html?doType=query"
@@ -155,12 +152,12 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 	c.OnResponse(func(r *colly.Response) {
 		err := json.Unmarshal(r.Body, &score)
 		if err != nil {
-			fmt.Println(err)
 			context.JSON(200, gin.H{
 				"code": 400,
 				"data": nil,
 				"msg":  "获取成绩失败",
 			})
+			wg.Done()
 			context.Abort()
 			return
 		}
@@ -172,7 +169,9 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 			"msg":  "获取成绩失败",
 			"data": nil,
 		})
+		wg.Done()
 		context.Abort()
+		return
 	}
 	scoreChan <- score
 	wg.Done()

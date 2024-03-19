@@ -18,11 +18,5 @@ func App() *gin.Engine {
 func InitRouter(app *gin.Engine) {
 	app.POST("/login", service.LoginService{}.Login)
 	app.GET("/scores", service.QueryService{}.GetScoreList)
-	app.GET("/test", func(context *gin.Context) {
-		context.JSON(200, gin.H{
-			"code": 200,
-			"msg":  "test",
-			"data": "hello world",
-		})
-	})
+	app.GET("/curriculum", service.CurriculumService{}.Curriculum)
 }

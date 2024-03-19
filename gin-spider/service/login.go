@@ -9,11 +9,11 @@ type LoginService struct {
 }
 
 func (login LoginService) Login(context *gin.Context) {
-	username := context.PostForm("username")
+	username := context.PostForm("stuId")
 	password := context.PostForm("password")
 	if username == "" || password == "" {
 		context.JSON(200, gin.H{
-			"code": 200,
+			"code": 400,
 			"msg":  "学号或密码为空",
 		})
 		return
@@ -21,7 +21,7 @@ func (login LoginService) Login(context *gin.Context) {
 	model.Collector = model.Initcolly(username, password)
 	if model.Collector == nil {
 		context.JSON(200, gin.H{
-			"code": "200",
+			"code": "400",
 			"msg":  "账号或密码错误!",
 		})
 	} else {
