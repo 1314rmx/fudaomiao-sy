@@ -8,25 +8,48 @@ import (
 	"github.com/gocolly/colly"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
 type QueryService struct {
 }
 
+var wg sync.WaitGroup
+
 func (query QueryService) GetScoreList(context *gin.Context) {
-	semesters, info := getSemester(context)
-	Query(context, semesters, info)
+	semestersChan := make(chan []semesterList)
+	infoChan := make(chan model.SemesterInfo)
+	scoreChan := make(chan model.Stuscore)
+	go getSemester(context, semestersChan, infoChan)
+	go Query(context, scoreChan)
+	wg.Wait()
+	semesters := <-semestersChan
+	score := <-scoreChan
+	info := <-infoChan
+	for i := 0; i < len(score.Items); i++ {
+		score.Items[i].Xm = info.Xm
+		score.Items[i].Xh = info.Xh
+	}
+	context.JSON(200, gin.H{
+		"code":     200,
+		"msg":      "获取成绩成功!",
+		"semester": semesters,
+		"data":     score,
+	})
 }
 
 type semesterList struct {
 	TermName string `json:"termName"`
 }
 
-func getSemester(context *gin.Context) ([]semesterList, model.SemesterInfo) {
-	info_url := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xsxxxggl/xsxxwh_cxCkDgxsxx.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=N100801"
+func getSemester(context *gin.Context, semestersChan chan []semesterList, infoChan chan model.SemesterInfo) {
+	wg.Add(1)
 	var semesterInfo model.SemesterInfo
-	model.Collector.OnResponse(func(r *colly.Response) {
+	c := model.Collector.Clone()
+	c.AllowURLRevisit = true
+	c.OnResponse(func(r *colly.Response) {
+		fmt.Println(r.Request.URL)
 		err := json.Unmarshal(r.Body, &semesterInfo)
 		if err != nil {
 			context.JSON(200, gin.H{
@@ -38,7 +61,8 @@ func getSemester(context *gin.Context) ([]semesterList, model.SemesterInfo) {
 			return
 		}
 	})
-	model.Collector.Visit(info_url)
+	info_url := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xsxxxggl/xsxxwh_cxCkDgxsxx.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=N100801"
+	c.Visit(info_url)
 	fmt.Println(semesterInfo)
 	xz, _ := strconv.Atoi(semesterInfo.Xz)
 	njdmID, _ := strconv.Atoi(semesterInfo.NjdmID)
@@ -51,7 +75,7 @@ func getSemester(context *gin.Context) ([]semesterList, model.SemesterInfo) {
 	if now.Month() < 7 {
 		pastyearnum = pastyearnum*2 - 1
 	}
-	fmt.Println(pastyearnum)
+	fmt.Println("pastyearnum", pastyearnum)
 	var semesters = make([]semesterList, pastyearnum)
 	for i := 0; i < pastyearnum; i++ {
 		if i%2 == 0 {
@@ -64,10 +88,13 @@ func getSemester(context *gin.Context) ([]semesterList, model.SemesterInfo) {
 			break
 		}
 	}
-	return semesters, semesterInfo
+	semestersChan <- semesters
+	infoChan <- semesterInfo
+	wg.Done()
 }
 
-func Query(context *gin.Context, semesters []semesterList, info model.SemesterInfo) {
+func Query(context *gin.Context, scoreChan chan model.Stuscore) {
+	wg.Add(1)
 	now := time.Now()
 	year := now.Year()
 	month := now.Month()
@@ -122,8 +149,10 @@ func Query(context *gin.Context, semesters []semesterList, info model.SemesterIn
 		"time":                   "1",
 	}
 	var score model.Stuscore
+	c := model.Collector.Clone()
+	c.AllowURLRevisit = true
 
-	model.Collector.OnResponse(func(r *colly.Response) {
+	c.OnResponse(func(r *colly.Response) {
 		err := json.Unmarshal(r.Body, &score)
 		if err != nil {
 			fmt.Println(err)
@@ -136,7 +165,7 @@ func Query(context *gin.Context, semesters []semesterList, info model.SemesterIn
 			return
 		}
 	})
-	err := model.Collector.Post(cjurl, cjdata)
+	err := c.Post(cjurl, cjdata)
 	if err != nil {
 		context.JSON(200, gin.H{
 			"code": 400,
@@ -144,17 +173,7 @@ func Query(context *gin.Context, semesters []semesterList, info model.SemesterIn
 			"data": nil,
 		})
 		context.Abort()
-		return
 	}
-	for i := 0; i < len(score.Items); i++ {
-		score.Items[i].Xm = info.Xm
-		score.Items[i].Xh = info.Xh
-	}
-	context.JSON(200, gin.H{
-		"code":     200,
-		"msg":      "获取成绩成功",
-		"semester": semesters,
-		"data":     score.Items,
-	})
-	semesters = nil
+	scoreChan <- score
+	wg.Done()
 }
