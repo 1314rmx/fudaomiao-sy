@@ -5,7 +5,9 @@ import (
 	"gin-spider/model"
 	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
+	"regexp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -46,6 +48,51 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 		"xsdm": "",
 	}
 	c.Post(curriculum_url, curriculum_data)
+
+	for i := 0; i < len(kb.KbList); i++ {
+		zcd := kb.KbList[i].Zcd
+		jc := kb.KbList[i].Jc
+		pattern := `\d+`
+		re := regexp.MustCompile(pattern)
+		matchs := re.FindAllString(zcd, -1)
+		zcd_start, _ := strconv.Atoi(matchs[0])
+		zcd_end, _ := strconv.Atoi(matchs[1])
+		match := re.FindAllString(jc, -1)
+		jc_start := match[0]
+		if strings.Contains(zcd, "单") {
+			count := 0
+			kb.KbList[i].Weeks = make([]string, (zcd_end-zcd_start+2)/2)
+			for j := zcd_start; j <= zcd_end; j++ {
+				if j%2 != 0 {
+					kb.KbList[i].Weeks[count] = strconv.Itoa(j)
+					kb.KbList[i].SectionCount = "2"
+					kb.KbList[i].Section = jc_start
+					count++
+				}
+			}
+		} else if strings.Contains(zcd, "双") {
+			count := 0
+			kb.KbList[i].Weeks = make([]string, (zcd_end-zcd_start+2)/2)
+			for j := zcd_start; j <= zcd_end; j++ {
+				if j%2 == 0 {
+					kb.KbList[i].Weeks[count] = strconv.Itoa(j)
+					kb.KbList[i].SectionCount = "2"
+					kb.KbList[i].Section = jc_start
+					count++
+				}
+			}
+		} else {
+			count := 0
+			kb.KbList[i].Weeks = make([]string, zcd_end-zcd_start+1)
+			for j := zcd_start; j <= zcd_end; j++ {
+				kb.KbList[i].Weeks[count] = strconv.Itoa(j)
+				kb.KbList[i].SectionCount = "2"
+				kb.KbList[i].Section = jc_start
+				count++
+			}
+		}
+	}
+
 	context.JSON(200, gin.H{
 		"code": 200,
 		"data": kb,

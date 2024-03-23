@@ -5,6 +5,8 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/base64"
+	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -193,5 +195,11 @@ func main() {
 	//})
 	//c.Post(cjurl, data33)
 	//fmt.Println(score)
+
+	str := "1-15周(单)"
+	pattern := `\d+`
+	re := regexp.MustCompile(pattern)
+	matchs := re.FindAllString(str, -1)
+	fmt.Println(matchs)
 
 }

@@ -17,6 +17,9 @@ func Initcolly(username string, pwd string) *colly.Collector {
 	c := colly.NewCollector(
 		colly.UserAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36"),
 	)
+	c.Limit(&colly.LimitRule{
+		Parallelism: 100,
+	})
 	c.AllowURLRevisit = true
 	//获取密钥和固定值
 	var pwdEncryptSalt string
