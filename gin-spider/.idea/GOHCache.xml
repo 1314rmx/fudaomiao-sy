@@ -137,7 +137,7 @@
         <entry key="file://$PROJECT_DIR$/service/curriculum.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711201497957" />
+              <option name="lastModified" value="1711202911095" />
               <option name="schema">
                 <list>
                   <option value="CurriculumService" />
@@ -174,7 +174,7 @@
         <entry key="file://$PROJECT_DIR$/test/demo/test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711200291732" />
+              <option name="lastModified" value="1711202823809" />
               <option name="schema">
                 <list>
                   <option value="stuscore" />

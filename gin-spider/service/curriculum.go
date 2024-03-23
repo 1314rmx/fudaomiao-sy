@@ -5,6 +5,7 @@ import (
 	"gin-spider/model"
 	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -50,29 +51,40 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 	c.Post(curriculum_url, curriculum_data)
 
 	for i := 0; i < len(kb.KbList); i++ {
+		//获取周次
 		zcd := kb.KbList[i].Zcd
+		//获取节次
 		jc := kb.KbList[i].Jc
 		pattern := `\d+`
 		re := regexp.MustCompile(pattern)
 		matchs := re.FindAllString(zcd, -1)
+		//匹配正则得到周次第一个数字
 		zcd_start, _ := strconv.Atoi(matchs[0])
+		//匹配正则得到周次第二个数字
 		zcd_end, _ := strconv.Atoi(matchs[1])
 		match := re.FindAllString(jc, -1)
+		//匹配获取节次第一个数字
 		jc_start := match[0]
+		count := 0
 		if strings.Contains(zcd, "单") {
-			count := 0
-			kb.KbList[i].Weeks = make([]string, (zcd_end-zcd_start+2)/2)
+			//为周数组开辟空间,向上取整
+			zc := int(math.Ceil(float64((float64(zcd_end) - float64(zcd_start) + 1.0) / 2.0)))
+			kb.KbList[i].Weeks = make([]string, zc)
 			for j := zcd_start; j <= zcd_end; j++ {
 				if j%2 != 0 {
+					//周次
 					kb.KbList[i].Weeks[count] = strconv.Itoa(j)
+					//节数
 					kb.KbList[i].SectionCount = "2"
+					//开始的节
 					kb.KbList[i].Section = jc_start
 					count++
 				}
 			}
 		} else if strings.Contains(zcd, "双") {
-			count := 0
-			kb.KbList[i].Weeks = make([]string, (zcd_end-zcd_start+2)/2)
+			//为周数组开辟空间,向上取整
+			zc := int(math.Ceil(float64((float64(zcd_end) - float64(zcd_start) + 1.0) / 2.0)))
+			kb.KbList[i].Weeks = make([]string, zc)
 			for j := zcd_start; j <= zcd_end; j++ {
 				if j%2 == 0 {
 					kb.KbList[i].Weeks[count] = strconv.Itoa(j)
@@ -82,7 +94,7 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 				}
 			}
 		} else {
-			count := 0
+			//为周数组开辟空间
 			kb.KbList[i].Weeks = make([]string, zcd_end-zcd_start+1)
 			for j := zcd_start; j <= zcd_end; j++ {
 				kb.KbList[i].Weeks[count] = strconv.Itoa(j)
