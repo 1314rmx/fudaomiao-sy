@@ -18,5 +18,5 @@ func App() *gin.Engine {
 func InitRouter(app *gin.Engine) {
 	app.POST("/login", service.LoginService{}.Login)
 	app.GET("/scores", service.QueryService{}.GetScoreList)
-	app.GET("/curriculum", service.CurriculumService{}.Curriculum)
+	app.GET("/courses", service.CurriculumService{}.Curriculum)
 }
