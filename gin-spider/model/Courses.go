@@ -2,11 +2,12 @@ package model
 
 type Courses struct {
 	KbList []struct {
-		Cdlbmc       string   `json:"cdlbmc"` //教室类型
-		Cdmc         string   `json:"cdmc"`   //上课教室
-		Jc           string   `json:"jc"`     //1-2节
-		Jxbmc        string   `json:"jxbmc"`  //课程名
-		Jxbsftkbj    string   `json:"jxbsftkbj"`
+		Cdlbmc       string   `json:"cdlbmc"`       //教室类型
+		Cdmc         string   `json:"cdmc"`         //上课教室
+		Jc           string   `json:"jc"`           //1-2节
+		Jxbmc        string   `json:"jxbmc"`        //课程名
+		Khfsmc       string   `json:"khfsmc"`       //考察
+		Kcxz         string   `json:"kcxz"`         //必修
 		Jxbzc        string   `json:"jxbzc"`        //上课的班级
 		Kcxszc       string   `json:"kcxszc"`       //授课的时间
 		Xf           string   `json:"xf"`           //学分
