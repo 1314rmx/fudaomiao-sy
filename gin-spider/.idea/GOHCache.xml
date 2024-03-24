@@ -3,6 +3,13 @@
   <component name="GoORMHelperCache">
     <option name="schemaMapping">
       <map>
+        <entry key="Courses">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/model/Courses.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="Curriculum">
           <value>
             <set>
@@ -13,6 +20,7 @@
         <entry key="CurriculumService">
           <value>
             <set>
+              <option value="file://$PROJECT_DIR$/service/courses.go" />
               <option value="file://$PROJECT_DIR$/service/curriculum.go" />
             </set>
           </value>
@@ -77,6 +85,18 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/model/Courses.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1711251647698" />
+              <option name="schema">
+                <list>
+                  <option value="Courses" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/model/Curriculum.go">
           <value>
             <ScannedPath>
@@ -134,6 +154,18 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/service/courses.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1711251647706" />
+              <option name="schema">
+                <list>
+                  <option value="CurriculumService" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/service/curriculum.go">
           <value>
             <ScannedPath>
@@ -187,6 +219,7 @@
     </option>
     <option name="tableStructMapping">
       <map>
+        <entry key="courses" value="Courses" />
         <entry key="curriculum" value="Curriculum" />
         <entry key="curriculum_service" value="CurriculumService" />
         <entry key="login_service" value="LoginService" />

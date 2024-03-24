@@ -1,6 +1,6 @@
 package model
 
-type Curriculum struct {
+type Courses struct {
 	KbList []struct {
 		Cdlbmc       string   `json:"cdlbmc"` //教室类型
 		Cdmc         string   `json:"cdmc"`   //上课教室

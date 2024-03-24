@@ -17,7 +17,7 @@ type CurriculumService struct {
 
 func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 	c := model.Collector.Clone()
-	var kb model.Curriculum
+	var kb model.Courses
 	c.AllowURLRevisit = true
 	c.OnResponse(func(r *colly.Response) {
 		err := json.Unmarshal(r.Body, &kb)
