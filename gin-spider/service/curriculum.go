@@ -55,6 +55,8 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 		zcd := kb.KbList[i].Zcd
 		//获取节次
 		jc := kb.KbList[i].Jc
+		//星期几
+		xqjmc := kb.KbList[i].Xqjmc
 		pattern := `\d+`
 		re := regexp.MustCompile(pattern)
 		matchs := re.FindAllString(zcd, -1)
@@ -65,6 +67,18 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 		match := re.FindAllString(jc, -1)
 		//匹配获取节次第一个数字
 		jc_start := match[0]
+		// 定义星期汉字到数字的映射
+		weekdayMapping := map[string]string{
+			"一": "1",
+			"二": "2",
+			"三": "3",
+			"四": "4",
+			"五": "5",
+			"六": "6",
+			"日": "7",
+		}
+		//获取到汉字,中文一个是三个字节
+		week := xqjmc[6:]
 		count := 0
 		if strings.Contains(zcd, "单") {
 			//为周数组开辟空间,向上取整
@@ -78,6 +92,8 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 					kb.KbList[i].SectionCount = "2"
 					//开始的节
 					kb.KbList[i].Section = jc_start
+					//设置星期几
+					kb.KbList[i].Week = weekdayMapping[week]
 					count++
 				}
 			}
@@ -90,6 +106,7 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 					kb.KbList[i].Weeks[count] = strconv.Itoa(j)
 					kb.KbList[i].SectionCount = "2"
 					kb.KbList[i].Section = jc_start
+					kb.KbList[i].Week = weekdayMapping[week]
 					count++
 				}
 			}
@@ -100,6 +117,7 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 				kb.KbList[i].Weeks[count] = strconv.Itoa(j)
 				kb.KbList[i].SectionCount = "2"
 				kb.KbList[i].Section = jc_start
+				kb.KbList[i].Week = weekdayMapping[week]
 				count++
 			}
 		}

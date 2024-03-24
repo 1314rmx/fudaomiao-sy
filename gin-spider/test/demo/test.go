@@ -204,5 +204,7 @@ func main() {
 
 	fmt.Println((14 + 1) / 2.0)
 	fmt.Println(int(math.Ceil(float64((14 + 1) / 2.0))))
+	str := "星期一"
+	fmt.Println(str[6:])
 
 }

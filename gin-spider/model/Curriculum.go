@@ -1,18 +1,6 @@
 package model
 
 type Curriculum struct {
-	Xsxx struct {
-		Kcms int `json:"KCMS"` //课程名
-	} `json:"xsxx"`
-	XqjmcMap struct {
-		Num1 string `json:"1"`
-		Num2 string `json:"2"`
-		Num3 string `json:"3"`
-		Num4 string `json:"4"`
-		Num5 string `json:"5"`
-		Num6 string `json:"6"`
-		Num7 string `json:"7"`
-	} `json:"xqjmcMap"` //星期几
 	KbList []struct {
 		Cdlbmc       string   `json:"cdlbmc"` //教室类型
 		Cdmc         string   `json:"cdmc"`   //上课教室
@@ -28,7 +16,8 @@ type Curriculum struct {
 		Zcd          string   `json:"zcd"`          //上课的周数
 		Weeks        []string `json:"weeks"`        //周数(手动增加)
 		Zxs          string   `json:"zxs"`          //总学时
-		Section      string   `json:"section"`      //开始节数
-		SectionCount string   `json:"sectionCount"` //一共几节
+		Section      string   `json:"section"`      //开始节数(手动增加)
+		SectionCount string   `json:"sectionCount"` //一共几节(手动增加)
+		Week         string   `json:"week"`         //星期几(手动增加)
 	}
 }
