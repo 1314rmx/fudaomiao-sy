@@ -44,6 +44,19 @@ type semesterList struct {
 }
 
 func getSemester(context *gin.Context, semestersChan chan []semesterList, infoChan chan model.SemesterInfo) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			context.JSON(200, gin.H{
+				"code": 400,
+				"data": nil,
+				"msg":  "发生错误!",
+			})
+			wg.Done()
+			context.Abort()
+			return
+		}
+	}()
 	wg.Add(1)
 	var semesterInfo model.SemesterInfo
 	c := model.Collector.Clone()
@@ -63,6 +76,17 @@ func getSemester(context *gin.Context, semestersChan chan []semesterList, infoCh
 	})
 	info_url := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xsxxxggl/xsxxwh_cxCkDgxsxx.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=N100801"
 	c.Visit(info_url)
+
+	if len(semesterInfo.Xh) < 8 {
+		context.JSON(200, gin.H{
+			"code": 400,
+			"data": nil,
+			"msg":  "暂时不允许老师账号查看!",
+		})
+		context.Abort()
+		return
+	}
+
 	xz, _ := strconv.Atoi(semesterInfo.Xz)
 	njdmID, _ := strconv.Atoi(semesterInfo.NjdmID)
 	now := time.Now()
@@ -92,6 +116,19 @@ func getSemester(context *gin.Context, semestersChan chan []semesterList, infoCh
 }
 
 func Query(context *gin.Context, scoreChan chan model.Stuscore) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			context.JSON(200, gin.H{
+				"code": 400,
+				"data": nil,
+				"msg":  "发生错误!",
+			})
+			wg.Done()
+			context.Abort()
+			return
+		}
+	}()
 	wg.Add(1)
 	now := time.Now()
 	year := now.Year()

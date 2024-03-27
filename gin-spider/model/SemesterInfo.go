@@ -5,4 +5,6 @@ type SemesterInfo struct {
 	Xz     string `json:"xz"`      //几年制
 	Xm     string `json:"xm"`      //姓名
 	Xh     string `json:"xh"`      //学号
+	Bhid   string `json:"bh_id"`   //专业班级
+	Zsjgid string `json:"zsjg_id"` //学院
 }
