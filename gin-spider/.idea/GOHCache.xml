@@ -80,7 +80,7 @@
         <entry key="file://$PROJECT_DIR$/main.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1710576214992" />
+              <option name="lastModified" value="1711632657638" />
             </ScannedPath>
           </value>
         </entry>
@@ -106,7 +106,7 @@
         <entry key="file://$PROJECT_DIR$/model/Courses.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711271736360" />
+              <option name="lastModified" value="1711620765056" />
               <option name="schema">
                 <list>
                   <option value="Courses" />
@@ -118,7 +118,7 @@
         <entry key="file://$PROJECT_DIR$/model/SemesterInfo.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711546703037" />
+              <option name="lastModified" value="1711621232667" />
               <option name="schema">
                 <list>
                   <option value="SemesterInfo" />
@@ -142,7 +142,7 @@
         <entry key="file://$PROJECT_DIR$/model/init.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1708059960528" />
+              <option name="lastModified" value="1711621232775" />
             </ScannedPath>
           </value>
         </entry>
@@ -156,14 +156,21 @@
         <entry key="file://$PROJECT_DIR$/router/router.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711547475430" />
+              <option name="lastModified" value="1711700989803" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/service/GetGnmkdmKey.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1711712092349" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/service/courses.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711251647706" />
+              <option name="lastModified" value="1711711972822" />
               <option name="schema">
                 <list>
                   <option value="CurriculumService" />
@@ -175,7 +182,7 @@
         <entry key="file://$PROJECT_DIR$/service/evaluate.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711254636535" />
+              <option name="lastModified" value="1711632592916" />
               <option name="schema">
                 <list>
                   <option value="EvaluateService" />
@@ -199,7 +206,7 @@
         <entry key="file://$PROJECT_DIR$/service/scores.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711547867751" />
+              <option name="lastModified" value="1711633244339" />
               <option name="schema">
                 <list>
                   <option value="QueryService" />
@@ -212,7 +219,7 @@
         <entry key="file://$PROJECT_DIR$/service/userInfo.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711547519034" />
+              <option name="lastModified" value="1711712151959" />
               <option name="schema">
                 <list>
                   <option value="UserInfoService" />
@@ -237,6 +244,6 @@
         <entry key="user_info_service" value="UserInfoService" />
       </map>
     </option>
-    <option name="lastTimeChecked" value="1711544558844" />
+    <option name="lastTimeChecked" value="1711699071554" />
   </component>
 </project>

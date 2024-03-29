@@ -29,6 +29,15 @@ func evaluate_spider(c *colly.Collector, url string, data map[string]string) {
 }
 
 func (evaluate EvaluateService) Evaluate(context *gin.Context) {
+	if GetGnmkdmKey()["usertype"] == "teacher" {
+		context.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "暂时不支持老师账号评价!",
+			"data": nil,
+		})
+		context.Abort()
+		return
+	}
 	c := model.Collector.Clone()
 	var courseInfo model.CourseInfo
 	c.AllowURLRevisit = true

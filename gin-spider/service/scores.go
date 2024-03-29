@@ -18,6 +18,15 @@ type QueryService struct {
 var wg sync.WaitGroup
 
 func (query QueryService) GetScoreList(context *gin.Context) {
+	if GetGnmkdmKey()["usertype"] == "teacher" {
+		context.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "暂时不支持老师账号查看分数!",
+			"data": nil,
+		})
+		context.Abort()
+		return
+	}
 	semestersChan := make(chan []semesterList)
 	infoChan := make(chan model.SemesterInfo)
 	scoreChan := make(chan model.Stuscore)
@@ -74,18 +83,8 @@ func getSemester(context *gin.Context, semestersChan chan []semesterList, infoCh
 			return
 		}
 	})
-	info_url := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xsxxxggl/xsxxwh_cxCkDgxsxx.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=N100801"
+	info_url := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xsxxxggl/xsxxwh_cxCkDgxsxx.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=" + GetGnmkdmKey()["userinfo"]
 	c.Visit(info_url)
-
-	if len(semesterInfo.Xh) < 8 {
-		context.JSON(200, gin.H{
-			"code": 400,
-			"data": nil,
-			"msg":  "暂时不允许老师账号查看!",
-		})
-		context.Abort()
-		return
-	}
 
 	xz, _ := strconv.Atoi(semesterInfo.Xz)
 	njdmID, _ := strconv.Atoi(semesterInfo.NjdmID)
@@ -171,7 +170,7 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 	timestamp := now.UnixNano() / 1e6
 	timestampStr := fmt.Sprintf("%d", timestamp)
 	cjdata := map[string]string{
-		"zd_fzdm":                "N305005-xsxnm=" + schoolyear,
+		"zd_fzdm":                GetGnmkdmKey()["score"] + "-xsxnm=" + schoolyear,
 		"xqm":                    semester,
 		"kcbj":                   "",
 		"_search":                "false",

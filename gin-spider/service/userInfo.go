@@ -23,6 +23,15 @@ func (userInfo UserInfoService) UserInfo(context *gin.Context) {
 			return
 		}
 	}()
+	if GetGnmkdmKey()["usertype"] == "teacher" {
+		context.JSON(200, gin.H{
+			"code": 400,
+			"data": nil,
+			"msg":  "教师暂不允许查看个人信息!",
+		})
+		context.Abort()
+		return
+	}
 	var semesterInfo model.SemesterInfo
 	c := model.Collector.Clone()
 	c.AllowURLRevisit = true
@@ -38,7 +47,7 @@ func (userInfo UserInfoService) UserInfo(context *gin.Context) {
 			return
 		}
 	})
-	info_url := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xsxxxggl/xsxxwh_cxCkDgxsxx.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=N100801"
+	info_url := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xsxxxggl/xsxxwh_cxCkDgxsxx.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=" + GetGnmkdmKey()["userinfo"]
 	c.Visit(info_url)
 	context.JSON(200, gin.H{
 		"code": 200,

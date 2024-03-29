@@ -31,7 +31,10 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 			return
 		}
 	})
-	curriculum_url := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/kbcx/xskbcx_cxXsgrkb.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=N2151"
+	curriculum_url := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/kbcx/xskbcx_cxXsgrkb.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=" + GetGnmkdmKey()["kb"]
+	if GetGnmkdmKey()["usertype"] == "teacher" {
+		curriculum_url = "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/kbcx/jskbcx_cxJsKb1.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=" + GetGnmkdmKey()["kb"]
+	}
 	now := time.Now()
 	year := now.Year()
 	month := now.Month()
