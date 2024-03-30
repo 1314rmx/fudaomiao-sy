@@ -1,12 +1,14 @@
 package main
 
 import (
+	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
-	"math"
+	"github.com/gocolly/colly"
+	"io/ioutil"
 	"strings"
 )
 
@@ -202,9 +204,26 @@ func main() {
 	//matchs := re.FindAllString(str, -1)
 	//fmt.Println(matchs)
 
-	fmt.Println((14 + 1) / 2.0)
-	fmt.Println(int(math.Ceil(float64((14 + 1) / 2.0))))
-	str := "星期一"
-	fmt.Println(str[6:])
+	//fmt.Println((14 + 1) / 2.0)
+	//fmt.Println(int(math.Ceil(float64((14 + 1) / 2.0))))
+	//str := "星期一"
+	//fmt.Println(str[6:])
+
+	captcha_imgurl := "https://webvpn.hjnu.edu.cn/https/736e6d702d6167656e74636f6d6d756efeb964a4bb9598689c84a24f3fe5e0/authserver/getCaptcha.htl"
+	c := colly.NewCollector(
+		colly.UserAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36"),
+	)
+	c.Limit(&colly.LimitRule{
+		Parallelism: 100,
+	})
+	c.AllowURLRevisit = true
+	c.OnResponse(func(r *colly.Response) {
+		imgBytes, err := ioutil.ReadAll(bytes.NewReader(r.Body))
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(base64.StdEncoding.EncodeToString(imgBytes))
+	})
+	c.Visit(captcha_imgurl)
 
 }

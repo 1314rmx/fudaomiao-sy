@@ -12,15 +12,13 @@ import (
 
 var Collector *colly.Collector
 
-func Initcolly(username string, pwd string) *colly.Collector {
+func Initcolly2() {
+
+}
+
+func Initcolly(username string, pwd string, captcha string) *colly.Collector {
 	hjurl := "https://webvpn.hjnu.edu.cn/http/736e6d702d6167656e74636f6d6d756efeb964a4bb9598689c84a24f3fe5e0/authserver/login?service=http%3A%2F%2Fjwgl.hjnu.edu.cn%3A82%2Fsso%2Fjziotlogin"
-	c := colly.NewCollector(
-		colly.UserAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36"),
-	)
-	c.Limit(&colly.LimitRule{
-		Parallelism: 100,
-	})
-	c.AllowURLRevisit = true
+	c := Collector
 	//获取密钥和固定值
 	var pwdEncryptSalt string
 	var execution string
@@ -37,7 +35,7 @@ func Initcolly(username string, pwd string) *colly.Collector {
 	data := map[string]string{
 		"username":  username,
 		"password":  enpwd,
-		"captcha":   "",
+		"captcha":   captcha,
 		"_eventId":  "submit",
 		"_cllt":     "userNameLogin",
 		"dllt":      "generalLogin",
@@ -48,6 +46,9 @@ func Initcolly(username string, pwd string) *colly.Collector {
 	c.Post(hjurl, data)
 
 	var flag bool
+	c.OnResponse(func(r *colly.Response) {
+		fmt.Println(string(r.Body))
+	})
 	c.OnHTML("#btn_yd", func(e *colly.HTMLElement) {
 		if strings.Contains(e.Text, "已阅读") {
 			flag = true
@@ -114,5 +115,4 @@ func encrypt_pwd(pwd string, key string) string {
 
 	encryptedPwd := encryptPassword(pwd, key)
 	return encryptedPwd
-
 }

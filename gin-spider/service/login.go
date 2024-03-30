@@ -11,6 +11,7 @@ type LoginService struct {
 func (login LoginService) Login(context *gin.Context) {
 	username := context.PostForm("stuId")
 	password := context.PostForm("password")
+	captcha := context.DefaultPostForm("captcha", "")
 	if username == "" || password == "" {
 		context.JSON(200, gin.H{
 			"code": 400,
@@ -18,7 +19,7 @@ func (login LoginService) Login(context *gin.Context) {
 		})
 		return
 	}
-	model.Collector = model.Initcolly(username, password)
+	model.Collector = model.Initcolly(username, password, captcha)
 	if model.Collector == nil {
 		context.JSON(200, gin.H{
 			"code": "400",
