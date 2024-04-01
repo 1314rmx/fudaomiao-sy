@@ -2,13 +2,18 @@ package service
 
 import (
 	"gin-spider/model"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
 	"regexp"
 	"strings"
 )
 
-func GetGnmkdmKey() map[string]string {
-	c := model.Collector.Clone()
+func GetGnmkdmKey(context *gin.Context) map[string]string {
+	//session := sessions.Default()
+	//c := model.UserCollector[session.Get("username").(string)]
+	session := sessions.Default(context)
+	c := model.UserCollector[session.Get("username").(string)].Clone()
 	c.AllowURLRevisit = true
 	gnmkdmkey := make(map[string]string, 4)
 	c.OnHTML("#myDiv", func(e *colly.HTMLElement) {

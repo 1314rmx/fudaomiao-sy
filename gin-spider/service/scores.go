@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gin-spider/model"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
 	"strconv"
@@ -18,7 +19,7 @@ type QueryService struct {
 var wg sync.WaitGroup
 
 func (query QueryService) GetScoreList(context *gin.Context) {
-	if GetGnmkdmKey()["usertype"] == "teacher" {
+	if GetGnmkdmKey(context)["usertype"] == "teacher" {
 		context.JSON(200, gin.H{
 			"code": 400,
 			"msg":  "暂时不支持老师账号查看分数!",
@@ -61,14 +62,14 @@ func getSemester(context *gin.Context, semestersChan chan []semesterList, infoCh
 				"data": nil,
 				"msg":  "发生错误!",
 			})
-			wg.Done()
 			context.Abort()
 			return
 		}
 	}()
 	wg.Add(1)
 	var semesterInfo model.SemesterInfo
-	c := model.Collector.Clone()
+	session := sessions.Default(context)
+	c := model.UserCollector[session.Get("username").(string)].Clone()
 	c.AllowURLRevisit = true
 	c.OnResponse(func(r *colly.Response) {
 		err := json.Unmarshal(r.Body, &semesterInfo)
@@ -78,12 +79,11 @@ func getSemester(context *gin.Context, semestersChan chan []semesterList, infoCh
 				"data": nil,
 				"msg":  "获取学期信息失败!",
 			})
-			wg.Done()
 			context.Abort()
 			return
 		}
 	})
-	info_url := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xsxxxggl/xsxxwh_cxCkDgxsxx.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=" + GetGnmkdmKey()["userinfo"]
+	info_url := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xsxxxggl/xsxxwh_cxCkDgxsxx.html?vpn-12-o1-jwgl.hjnu.edu.cn:82&gnmkdm=" + GetGnmkdmKey(context)["userinfo"]
 	c.Visit(info_url)
 
 	xz, _ := strconv.Atoi(semesterInfo.Xz)
@@ -123,7 +123,6 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 				"data": nil,
 				"msg":  "发生错误!",
 			})
-			wg.Done()
 			context.Abort()
 			return
 		}
@@ -161,7 +160,6 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 			"data": nil,
 			"msg":  "参数错误",
 		})
-		wg.Done()
 		context.Abort()
 		return
 	}
@@ -170,7 +168,7 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 	timestamp := now.UnixNano() / 1e6
 	timestampStr := fmt.Sprintf("%d", timestamp)
 	cjdata := map[string]string{
-		"zd_fzdm":                GetGnmkdmKey()["score"] + "-xsxnm=" + schoolyear,
+		"zd_fzdm":                GetGnmkdmKey(context)["score"] + "-xsxnm=" + schoolyear,
 		"xqm":                    semester,
 		"kcbj":                   "",
 		"_search":                "false",
@@ -182,7 +180,8 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 		"time":                   "1",
 	}
 	var score model.Stuscore
-	c := model.Collector.Clone()
+	session := sessions.Default(context)
+	c := model.UserCollector[session.Get("username").(string)]
 	c.AllowURLRevisit = true
 
 	c.OnResponse(func(r *colly.Response) {
@@ -193,7 +192,6 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 				"data": nil,
 				"msg":  "获取成绩失败",
 			})
-			wg.Done()
 			context.Abort()
 			return
 		}
@@ -205,7 +203,6 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 			"msg":  "获取成绩失败",
 			"data": nil,
 		})
-		wg.Done()
 		context.Abort()
 		return
 	}

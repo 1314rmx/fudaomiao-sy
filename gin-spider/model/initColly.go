@@ -6,19 +6,20 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
 	"strings"
 )
 
-var Collector *colly.Collector
+var UserCollector = make(map[string]*colly.Collector)
 
-func Initcolly2() {
-
-}
-
-func Initcolly(username string, pwd string, captcha string) *colly.Collector {
+func Initcolly(username string, pwd string, captcha string, context *gin.Context) bool {
 	hjurl := "https://webvpn.hjnu.edu.cn/http/736e6d702d6167656e74636f6d6d756efeb964a4bb9598689c84a24f3fe5e0/authserver/login?service=http%3A%2F%2Fjwgl.hjnu.edu.cn%3A82%2Fsso%2Fjziotlogin"
-	c := Collector
+	c := UserCollector[username]
+	if c == nil {
+		context.Abort()
+		return false
+	}
 	//获取密钥和固定值
 	var pwdEncryptSalt string
 	var execution string
@@ -47,7 +48,7 @@ func Initcolly(username string, pwd string, captcha string) *colly.Collector {
 
 	var flag bool
 	c.OnResponse(func(r *colly.Response) {
-		fmt.Println(string(r.Body))
+		//fmt.Println(string(r.Body))
 	})
 	c.OnHTML("#btn_yd", func(e *colly.HTMLElement) {
 		if strings.Contains(e.Text, "已阅读") {
@@ -58,10 +59,7 @@ func Initcolly(username string, pwd string, captcha string) *colly.Collector {
 	})
 	c.Visit("https://webvpn.hjnu.edu.cn/login?cas_login=true")
 	fmt.Println(flag)
-	if flag {
-		return c
-	}
-	return nil
+	return flag
 }
 
 // 生成随机字符串

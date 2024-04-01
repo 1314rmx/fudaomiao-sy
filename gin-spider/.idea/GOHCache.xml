@@ -149,14 +149,21 @@
         <entry key="file://$PROJECT_DIR$/model/initColly.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1710857006726" />
+              <option name="lastModified" value="1711778030106" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/router/router.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711700989803" />
+              <option name="lastModified" value="1711778030218" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/service/CheckNeedCaptcha.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1711778654273" />
             </ScannedPath>
           </value>
         </entry>
@@ -194,7 +201,7 @@
         <entry key="file://$PROJECT_DIR$/service/login.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1710855411061" />
+              <option name="lastModified" value="1711774051745" />
               <option name="schema">
                 <list>
                   <option value="LoginService" />
@@ -244,6 +251,6 @@
         <entry key="user_info_service" value="UserInfoService" />
       </map>
     </option>
-    <option name="lastTimeChecked" value="1711699071554" />
+    <option name="lastTimeChecked" value="1711852194178" />
   </component>
 </project>

@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/json"
 	"gin-spider/model"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
 	"math/rand"
@@ -29,7 +30,7 @@ func evaluate_spider(c *colly.Collector, url string, data map[string]string) {
 }
 
 func (evaluate EvaluateService) Evaluate(context *gin.Context) {
-	if GetGnmkdmKey()["usertype"] == "teacher" {
+	if GetGnmkdmKey(context)["usertype"] == "teacher" {
 		context.JSON(200, gin.H{
 			"code": 400,
 			"msg":  "暂时不支持老师账号评价!",
@@ -38,7 +39,8 @@ func (evaluate EvaluateService) Evaluate(context *gin.Context) {
 		context.Abort()
 		return
 	}
-	c := model.Collector.Clone()
+	session := sessions.Default(context)
+	c := model.UserCollector[session.Get("username").(string)]
 	var courseInfo model.CourseInfo
 	c.AllowURLRevisit = true
 	getinfourl := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xspjgl/xspj_cxXspjIndex.html?doType=query&gnmkdm=N401605"

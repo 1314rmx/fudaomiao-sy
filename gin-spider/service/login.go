@@ -1,7 +1,9 @@
 package service
 
 import (
+	"fmt"
 	"gin-spider/model"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,13 +21,23 @@ func (login LoginService) Login(context *gin.Context) {
 		})
 		return
 	}
-	model.Collector = model.Initcolly(username, password, captcha)
-	if model.Collector == nil {
+	flag := model.Initcolly(username, password, captcha, context)
+	if !flag {
 		context.JSON(200, gin.H{
 			"code": "400",
 			"msg":  "账号或密码错误!",
 		})
 	} else {
+		session := sessions.Default(context)
+		session.Options(sessions.Options{
+			MaxAge: 60 * 60 * 24 * 30,
+		})
+		session.Set("username", username)
+		err := session.Save()
+		if err != nil {
+			fmt.Println("session保存失败", err)
+			return
+		}
 		context.JSON(200, gin.H{
 			"code": 200,
 			"msg":  "登录成功!",
