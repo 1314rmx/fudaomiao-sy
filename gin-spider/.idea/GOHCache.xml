@@ -38,6 +38,13 @@
             </set>
           </value>
         </entry>
+        <entry key="LogoutService">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/service/logout.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="QueryService">
           <value>
             <set>
@@ -80,7 +87,7 @@
         <entry key="file://$PROJECT_DIR$/main.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711632657638" />
+              <option name="lastModified" value="1712817622217" />
             </ScannedPath>
           </value>
         </entry>
@@ -149,35 +156,35 @@
         <entry key="file://$PROJECT_DIR$/model/initColly.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711778030106" />
+              <option name="lastModified" value="1712027798573" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/router/router.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711778030218" />
+              <option name="lastModified" value="1712822945514" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/service/CheckNeedCaptcha.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711778654273" />
+              <option name="lastModified" value="1712822945409" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/service/GetGnmkdmKey.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711712092349" />
+              <option name="lastModified" value="1712985859079" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/service/courses.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711711972822" />
+              <option name="lastModified" value="1712818934358" />
               <option name="schema">
                 <list>
                   <option value="CurriculumService" />
@@ -189,7 +196,7 @@
         <entry key="file://$PROJECT_DIR$/service/evaluate.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711632592916" />
+              <option name="lastModified" value="1712822945267" />
               <option name="schema">
                 <list>
                   <option value="EvaluateService" />
@@ -201,7 +208,7 @@
         <entry key="file://$PROJECT_DIR$/service/login.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711774051745" />
+              <option name="lastModified" value="1712822945281" />
               <option name="schema">
                 <list>
                   <option value="LoginService" />
@@ -210,10 +217,22 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/service/logout.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1712822945271" />
+              <option name="schema">
+                <list>
+                  <option value="LogoutService" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/service/scores.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711633244339" />
+              <option name="lastModified" value="1712822945276" />
               <option name="schema">
                 <list>
                   <option value="QueryService" />
@@ -226,7 +245,7 @@
         <entry key="file://$PROJECT_DIR$/service/userInfo.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1711712151959" />
+              <option name="lastModified" value="1712822945283" />
               <option name="schema">
                 <list>
                   <option value="UserInfoService" />
@@ -244,6 +263,7 @@
         <entry key="curriculum_service" value="CurriculumService" />
         <entry key="evaluate_service" value="EvaluateService" />
         <entry key="login_service" value="LoginService" />
+        <entry key="logout_service" value="LogoutService" />
         <entry key="query_service" value="QueryService" />
         <entry key="semester_info" value="SemesterInfo" />
         <entry key="semester_list" value="semesterList" />
@@ -251,6 +271,6 @@
         <entry key="user_info_service" value="UserInfoService" />
       </map>
     </option>
-    <option name="lastTimeChecked" value="1711852194178" />
+    <option name="lastTimeChecked" value="1712985713827" />
   </component>
 </project>

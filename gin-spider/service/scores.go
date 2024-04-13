@@ -69,6 +69,14 @@ func getSemester(context *gin.Context, semestersChan chan []semesterList, infoCh
 	wg.Add(1)
 	var semesterInfo model.SemesterInfo
 	session := sessions.Default(context)
+	if session.Get("username") == nil {
+		context.JSON(200, gin.H{
+			"code": 400,
+			"data": nil,
+			"msg":  "请先登录!",
+		})
+		context.Abort()
+	}
 	c := model.UserCollector[session.Get("username").(string)].Clone()
 	c.AllowURLRevisit = true
 	c.OnResponse(func(r *colly.Response) {

@@ -16,6 +16,7 @@ var UserCollector = make(map[string]*colly.Collector)
 func Initcolly(username string, pwd string, captcha string, context *gin.Context) bool {
 	hjurl := "https://webvpn.hjnu.edu.cn/http/736e6d702d6167656e74636f6d6d756efeb964a4bb9598689c84a24f3fe5e0/authserver/login?service=http%3A%2F%2Fjwgl.hjnu.edu.cn%3A82%2Fsso%2Fjziotlogin"
 	c := UserCollector[username]
+	fmt.Println(UserCollector[username])
 	if c == nil {
 		context.Abort()
 		return false

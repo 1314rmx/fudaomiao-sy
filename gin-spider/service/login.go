@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"gin-spider/model"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -21,10 +22,14 @@ func (login LoginService) Login(context *gin.Context) {
 		})
 		return
 	}
+	keys := make([]string, 0, len(model.UserCollector))
+	for key := range model.UserCollector {
+		keys = append(keys, key)
+	}
 	flag := model.Initcolly(username, password, captcha, context)
 	if !flag {
 		context.JSON(200, gin.H{
-			"code": "400",
+			"code": 400,
 			"msg":  "账号或密码错误!",
 		})
 	} else {
