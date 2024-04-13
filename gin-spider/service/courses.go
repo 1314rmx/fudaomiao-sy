@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	"gin-spider/model"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -18,6 +19,16 @@ type CurriculumService struct {
 
 func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 	session := sessions.Default(context)
+	if session.Get("username") == nil {
+		context.JSON(200, gin.H{
+			"code": 400,
+			"data": nil,
+			"msg":  "请先登录!",
+		})
+		context.Abort()
+	}
+	fmt.Println(session.Get("username").(string))
+	fmt.Println(model.UserCollector[session.Get("username").(string)])
 	c := model.UserCollector[session.Get("username").(string)].Clone()
 	var kb model.Courses
 	c.AllowURLRevisit = true

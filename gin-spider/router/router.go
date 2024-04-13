@@ -13,7 +13,7 @@ func App() *gin.Engine {
 	//gin.SetMode(gin.TestMode)
 	app := gin.Default()
 	store := cookie.NewStore([]byte("1314rmx"))
-	app.Use(sessions.Sessions("mysession", store))
+	app.Use(sessions.Sessions("sessionID", store))
 	app.Use(middleware.Cors())
 	InitRouter(app)
 	return app

@@ -49,7 +49,7 @@ func (evaluate EvaluateService) Evaluate(context *gin.Context) {
 		if err != nil {
 			context.JSON(200, gin.H{
 				"code": 400,
-				"msg":  "error",
+				"msg":  "获取课表信息失败!",
 				"data": nil,
 			})
 			context.Abort()

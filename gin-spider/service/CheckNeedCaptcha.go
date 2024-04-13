@@ -13,6 +13,15 @@ import (
 
 func CheckNeedCaptcha(context *gin.Context) {
 	username := context.Query("stuId")
+	if username == "" {
+		context.JSON(400, gin.H{
+			"code": 400,
+			"msg":  "请输入学号",
+			"data": nil,
+		})
+		context.Abort()
+	}
+	fmt.Println(username)
 	model.UserCollector[username] = colly.NewCollector(
 		colly.UserAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36"),
 	)
@@ -60,7 +69,7 @@ func CheckNeedCaptcha(context *gin.Context) {
 		if err != nil {
 			context.JSON(200, gin.H{
 				"code": 400,
-				"msg":  "发送错误!",
+				"msg":  "验证码发送错误!",
 				"data": nil,
 			})
 			context.Abort()

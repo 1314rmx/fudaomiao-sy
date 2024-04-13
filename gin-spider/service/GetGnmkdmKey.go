@@ -10,8 +10,6 @@ import (
 )
 
 func GetGnmkdmKey(context *gin.Context) map[string]string {
-	//session := sessions.Default()
-	//c := model.UserCollector[session.Get("username").(string)]
 	session := sessions.Default(context)
 	c := model.UserCollector[session.Get("username").(string)].Clone()
 	c.AllowURLRevisit = true

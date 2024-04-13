@@ -11,6 +11,14 @@ type LogoutService struct {
 
 func (logout LogoutService) Logout(context *gin.Context) {
 	session := sessions.Default(context)
+	if session.Get("username") == nil {
+		context.JSON(200, gin.H{
+			"code": 400,
+			"data": nil,
+			"msg":  "请先登录!",
+		})
+		context.Abort()
+	}
 	session.Set("username", nil)
 	delete(model.UserCollector, session.Get("username").(string))
 	context.JSON(200, gin.H{
