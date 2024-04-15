@@ -20,8 +20,9 @@ func (logout LogoutService) Logout(context *gin.Context) {
 		})
 		context.Abort()
 	}
-	session.Set("username", nil)
+	//需要先删除UserCollector里的session，再删除session
 	delete(model.UserCollector, session.Get("username").(string))
+	session.Set("username", nil)
 	context.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "退出成功",
