@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gin-spider/model"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
@@ -19,7 +20,7 @@ func (userInfo UserInfoService) UserInfo(context *gin.Context) {
 			context.JSON(200, gin.H{
 				"code": 400,
 				"data": nil,
-				"msg":  "发生错误!",
+				"msg":  "发生错误，抛出异常!",
 			})
 			context.Abort()
 			return
@@ -40,7 +41,7 @@ func (userInfo UserInfoService) UserInfo(context *gin.Context) {
 		context.JSON(200, gin.H{
 			"code": 400,
 			"data": nil,
-			"msg":  "请先登录!",
+			"msg":  "session为空，请先登录!",
 		})
 		context.Abort()
 	}

@@ -24,7 +24,7 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 		context.JSON(200, gin.H{
 			"code": 400,
 			"data": nil,
-			"msg":  "请先登录!",
+			"msg":  "session为空，请先登录!",
 		})
 		context.Abort()
 	}

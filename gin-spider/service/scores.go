@@ -4,13 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"gin-spider/model"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
-	"github.com/gocolly/colly"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
+	"github.com/gocolly/colly"
 )
 
 type QueryService struct {
@@ -60,7 +61,7 @@ func getSemester(context *gin.Context, semestersChan chan []semesterList, infoCh
 			context.JSON(200, gin.H{
 				"code": 400,
 				"data": nil,
-				"msg":  "发生错误!",
+				"msg":  "发生错误，抛出异常!",
 			})
 			context.Abort()
 			return
@@ -73,7 +74,7 @@ func getSemester(context *gin.Context, semestersChan chan []semesterList, infoCh
 		context.JSON(200, gin.H{
 			"code": 400,
 			"data": nil,
-			"msg":  "请先登录!",
+			"msg":  "session为空，请先登录!",
 		})
 		context.Abort()
 	}
@@ -129,7 +130,7 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 			context.JSON(200, gin.H{
 				"code": 400,
 				"data": nil,
-				"msg":  "发生错误!",
+				"msg":  "发生错误，抛出异常!",
 			})
 			context.Abort()
 			return

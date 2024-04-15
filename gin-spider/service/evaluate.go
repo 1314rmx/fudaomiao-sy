@@ -3,14 +3,15 @@ package service
 import (
 	"encoding/json"
 	"gin-spider/model"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
-	"github.com/gocolly/colly"
 	"math/rand"
 	"net/http"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
+	"github.com/gocolly/colly"
 )
 
 type EvaluateService struct {
@@ -22,7 +23,7 @@ var boolChan chan bool = make(chan bool)
 func evaluate_spider(c *colly.Collector, url string, data map[string]string) {
 	c.OnResponse(func(r *colly.Response) {
 		if strings.Contains(string(r.Body), "成功") {
-
+			//评价成功不知道返回啥就没写
 		}
 	})
 	c.Post(url, data)

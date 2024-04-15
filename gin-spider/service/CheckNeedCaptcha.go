@@ -5,10 +5,11 @@ import (
 	"encoding/base64"
 	"fmt"
 	"gin-spider/model"
-	"github.com/gin-gonic/gin"
-	"github.com/gocolly/colly"
 	"io/ioutil"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gocolly/colly"
 )
 
 func CheckNeedCaptcha(context *gin.Context) {
@@ -16,7 +17,7 @@ func CheckNeedCaptcha(context *gin.Context) {
 	if username == "" {
 		context.JSON(400, gin.H{
 			"code": 400,
-			"msg":  "请输入学号",
+			"msg":  "学号为空，请输入学号",
 			"data": nil,
 		})
 		context.Abort()
@@ -80,7 +81,7 @@ func CheckNeedCaptcha(context *gin.Context) {
 	model.UserCollector[username].Visit(captcha_imgurl)
 	context.JSON(200, gin.H{
 		"code": 200,
-		"msg":  "show",
+		"msg":  "验证码show",
 		"data": base64_str,
 	})
 }
