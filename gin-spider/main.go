@@ -6,5 +6,5 @@ import (
 
 func main() {
 	app := router.App()
-	app.Run(":9200")
+	app.Run(":9090")
 }
