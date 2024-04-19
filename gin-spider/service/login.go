@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"gin-spider/model"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -28,7 +29,7 @@ func (login LoginService) Login(context *gin.Context) {
 	flag := model.Initcolly(username, password, captcha, context)
 	if !flag {
 		context.JSON(200, gin.H{
-			"code": "400",
+			"code": 400,
 			"msg":  "账号或密码错误!",
 		})
 	} else {
