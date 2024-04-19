@@ -184,7 +184,7 @@
         <entry key="file://$PROJECT_DIR$/service/courses.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1712818934358" />
+              <option name="lastModified" value="1713513820295" />
               <option name="schema">
                 <list>
                   <option value="CurriculumService" />
@@ -271,6 +271,6 @@
         <entry key="user_info_service" value="UserInfoService" />
       </map>
     </option>
-    <option name="lastTimeChecked" value="1712985713827" />
+    <option name="lastTimeChecked" value="1713512215451" />
   </component>
 </project>

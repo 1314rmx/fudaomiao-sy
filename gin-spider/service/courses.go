@@ -2,7 +2,6 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 	"gin-spider/model"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -27,8 +26,6 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 		})
 		context.Abort()
 	}
-	fmt.Println(session.Get("username").(string))
-	fmt.Println(model.UserCollector[session.Get("username").(string)])
 	c := model.UserCollector[session.Get("username").(string)].Clone()
 	var kb model.Courses
 	c.AllowURLRevisit = true
@@ -79,7 +76,13 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 		//匹配正则得到周次第一个数字
 		zcd_start, _ := strconv.Atoi(matchs[0])
 		//匹配正则得到周次第二个数字
-		zcd_end, _ := strconv.Atoi(matchs[1])
+		//zcd_end, _ := strconv.Atoi(matchs[1]) //error
+		var zcd_end int
+		if len(matchs) == 2 {
+			zcd_end, _ = strconv.Atoi(matchs[1])
+		} else {
+			zcd_end = zcd_start
+		}
 		match := re.FindAllString(jc, -1)
 		//匹配获取节次第一个数字
 		jc_start := match[0]
