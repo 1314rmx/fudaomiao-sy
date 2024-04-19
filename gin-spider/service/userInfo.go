@@ -20,7 +20,7 @@ func (userInfo UserInfoService) UserInfo(context *gin.Context) {
 			context.JSON(200, gin.H{
 				"code": 400,
 				"data": nil,
-				"msg":  "发生错误，抛出异常!",
+				"msg":  "发生错误，建议注销再登录!",
 			})
 			context.Abort()
 			return

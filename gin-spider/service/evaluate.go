@@ -41,6 +41,14 @@ func (evaluate EvaluateService) Evaluate(context *gin.Context) {
 		return
 	}
 	session := sessions.Default(context)
+	if session.Get("username") == nil {
+		context.JSON(200, gin.H{
+			"code": 400,
+			"data": nil,
+			"msg":  "请先登录!",
+		})
+		context.Abort()
+	}
 	c := model.UserCollector[session.Get("username").(string)]
 	var courseInfo model.CourseInfo
 	c.AllowURLRevisit = true

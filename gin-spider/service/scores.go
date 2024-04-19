@@ -61,7 +61,7 @@ func getSemester(context *gin.Context, semestersChan chan []semesterList, infoCh
 			context.JSON(200, gin.H{
 				"code": 400,
 				"data": nil,
-				"msg":  "发生错误，抛出异常!",
+				"msg":  "发生错误，建议注销再登录!",
 			})
 			context.Abort()
 			return
@@ -130,7 +130,7 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 			context.JSON(200, gin.H{
 				"code": 400,
 				"data": nil,
-				"msg":  "发生错误，抛出异常!",
+				"msg":  "发生错误，建议注销再登录!",
 			})
 			context.Abort()
 			return
