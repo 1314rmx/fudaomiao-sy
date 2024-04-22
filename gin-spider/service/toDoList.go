@@ -24,7 +24,7 @@ func (toDoList ToDoList) AddToDoList(context *gin.Context) {
 	}
 	stuId := session.Get("username")
 	title := context.PostForm("title")
-	state, err := strconv.Atoi(context.DefaultPostForm("status", "0"))
+	status, err := strconv.Atoi(context.DefaultPostForm("status", "0"))
 	id := context.PostForm("id")
 	school := context.PostForm("school")
 	if err != nil || stuId == "" || id == "" || title == "" || school == "" {
@@ -37,7 +37,7 @@ func (toDoList ToDoList) AddToDoList(context *gin.Context) {
 	todolist := &model.Todolist{
 		Id:     id,
 		Title:  title,
-		Status: int32(state),
+		Status: int32(status),
 		StuId:  stuId.(string),
 		School: school,
 	}
@@ -70,7 +70,7 @@ func (toDoList ToDoList) GetToDoList(context *gin.Context) {
 	school := context.Query("school")
 	var todolist []model.Todolist
 	fmt.Println(model.DB)
-	result := model.DB.Table("todolist").Find(&todolist).Where("stuId = ? and school = ?", stuId, school).Order("id desc")
+	result := model.DB.Table("todolist").Where("stuId = ? and school = ?", stuId, school).Order("id desc").Find(&todolist)
 	if result.Error != nil {
 		context.JSON(200, gin.H{
 			"code": 400,
