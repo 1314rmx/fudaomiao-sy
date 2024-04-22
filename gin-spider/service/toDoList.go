@@ -70,7 +70,7 @@ func (toDoList ToDoList) GetToDoList(context *gin.Context) {
 	school := context.Query("school")
 	var todolist []model.Todolist
 	fmt.Println(model.DB)
-	result := model.DB.Table("todolist").Where("stuId = ? and school = ?", stuId, school).Order("id desc").Find(&todolist)
+	result := model.DB.Table("todolist").Where("stuId = ? and school = ?", stuId, school).Order("id asc").Find(&todolist)
 	if result.Error != nil {
 		context.JSON(200, gin.H{
 			"code": 400,
