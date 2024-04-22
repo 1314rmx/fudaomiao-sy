@@ -12,7 +12,7 @@ import (
 var DB *gorm.DB = Init()
 
 func Init() *gorm.DB {
-	dsn := "fudaomiao:fudaomiao123@tcp(127.0.0.1:3306)/seatreservation?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "fudaomiao:fudaomiao123@tcp(10.99.1.40:3306)/fudaomiao?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		SkipDefaultTransaction: false,
 		NamingStrategy: schema.NamingStrategy{

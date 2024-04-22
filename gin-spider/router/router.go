@@ -29,4 +29,6 @@ func InitRouter(app *gin.Engine) {
 	app.GET("/logout", service.LogoutService{}.Logout)
 	app.POST("/addtodolist", service.ToDoList{}.AddToDoList)
 	app.GET("/todolist", service.ToDoList{}.GetToDoList)
+	app.GET("/updatetodolist", service.ToDoList{}.UpdateTodoList)
+	app.GET("/deletetodolist", service.ToDoList{}.DeleteTodoList)
 }
