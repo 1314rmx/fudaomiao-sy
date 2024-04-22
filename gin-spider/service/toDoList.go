@@ -99,9 +99,9 @@ func (toDoList ToDoList) UpdateTodoList(context *gin.Context) {
 	}
 	stuId := session.Get("username")
 	id := context.PostForm("id")
-	title := context.PostForm("title")
+	status := context.PostForm("status")
 	school := context.PostForm("school")
-	result := model.DB.Model(&model.Todolist{}).Where("id=? and stuId=? and school = ?", id, stuId, school).Update("title", title)
+	result := model.DB.Model(&model.Todolist{}).Where("id=? and stuId=? and school = ?", id, stuId, school).Update("status", status)
 	if result.Error != nil {
 		context.JSON(200, gin.H{
 			"code": 400,
