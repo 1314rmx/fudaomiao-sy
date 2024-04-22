@@ -118,9 +118,9 @@ func (toDoList ToDoList) UpdateTodoList(context *gin.Context) {
 }
 
 func (toDoList ToDoList) DeleteTodoList(context *gin.Context) {
-	id := context.Query("id")
-	school := context.Query("school")
-	stuId := context.Query("stuId")
+	id := context.PostForm("id")
+	school := context.PostForm("school")
+	stuId := context.PostForm("stuId")
 	result := model.DB.Table("todolist").Where("id = ? and stuId = ? and school = ?", id, stuId, school).Delete(&model.Todolist{})
 	if result.Error != nil {
 		context.JSON(200, gin.H{

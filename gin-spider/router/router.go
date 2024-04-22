@@ -30,5 +30,5 @@ func InitRouter(app *gin.Engine) {
 	app.POST("/addtodolist", service.ToDoList{}.AddToDoList)
 	app.GET("/todolist", service.ToDoList{}.GetToDoList)
 	app.POST("/updatetodolist", service.ToDoList{}.UpdateTodoList)
-	app.GET("/deletetodolist", service.ToDoList{}.DeleteTodoList)
+	app.POST("/deletetodolist", service.ToDoList{}.DeleteTodoList)
 }
