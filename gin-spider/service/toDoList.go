@@ -70,7 +70,7 @@ func (toDoList ToDoList) GetToDoList(context *gin.Context) {
 	school := context.Query("school")
 	var todolist []model.Todolist
 	fmt.Println(model.DB)
-	result := model.DB.Table("todolist").Find(&todolist).Where("StuId = ? and school = ?", stuId, school).Order("id desc")
+	result := model.DB.Table("todolist").Find(&todolist).Where("stuId = ? and school = ?", stuId, school).Order("id desc")
 	if result.Error != nil {
 		context.JSON(200, gin.H{
 			"code": 400,
@@ -98,9 +98,9 @@ func (toDoList ToDoList) UpdateTodoList(context *gin.Context) {
 		return
 	}
 	stuId := session.Get("username")
-	id := context.Query("id")
-	title := context.Query("title")
-	school := context.Query("school")
+	id := context.PostForm("id")
+	title := context.PostForm("title")
+	school := context.PostForm("school")
 	result := model.DB.Model(&model.Todolist{}).Where("id=? and stuId=? and school = ?", id, stuId, school).Update("title", title)
 	if result.Error != nil {
 		context.JSON(200, gin.H{
