@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"strconv"
+	"time"
 )
 
 type ToDoList struct {
@@ -23,11 +24,9 @@ func (toDoList ToDoList) AddToDoList(context *gin.Context) {
 		return
 	}
 	stuId := session.Get("username")
-	title := context.PostForm("title")
-	status, err := strconv.Atoi(context.DefaultPostForm("status", "0"))
-	id := context.PostForm("id")
+	id := time.Now().Unix()
 	school := context.PostForm("school")
-	if err != nil || stuId == "" || id == "" || title == "" || school == "" {
+	if school == "" {
 		context.JSON(200, gin.H{
 			"code": 400,
 			"msg":  "参数错误",
@@ -35,9 +34,8 @@ func (toDoList ToDoList) AddToDoList(context *gin.Context) {
 		return
 	}
 	todolist := &model.Todolist{
-		Id:     id,
-		Title:  title,
-		Status: int32(status),
+		Id:     strconv.FormatInt(id, 10),
+		Title:  "",
 		StuId:  stuId.(string),
 		School: school,
 	}
@@ -99,9 +97,9 @@ func (toDoList ToDoList) UpdateTodoList(context *gin.Context) {
 	}
 	stuId := session.Get("username")
 	id := context.PostForm("id")
-	status := context.PostForm("status")
+	title := context.PostForm("title")
 	school := context.PostForm("school")
-	result := model.DB.Model(&model.Todolist{}).Where("id=? and stuId=? and school = ?", id, stuId, school).Update("status", status)
+	result := model.DB.Model(&model.Todolist{}).Where("id=? and stuId=? and school = ?", id, stuId, school).Update("title", title)
 	if result.Error != nil {
 		context.JSON(200, gin.H{
 			"code": 400,
