@@ -34,7 +34,7 @@ func (toDoList ToDoList) AddToDoList(context *gin.Context) {
 		return
 	}
 	var count int64
-	db := model.DB.Table("todolist").Count(&count)
+	db := model.DB.Table("todolist").Where("stuId = ? and school = ?", stuId, school).Count(&count)
 	if db.Error != nil || count >= 2 {
 		context.JSON(200, gin.H{
 			"code": 400,
