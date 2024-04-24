@@ -33,6 +33,14 @@ func (toDoList ToDoList) AddToDoList(context *gin.Context) {
 		})
 		return
 	}
+	var count int64
+	db := model.DB.Table("todolist").Count(&count)
+	if db.Error != nil || count >= 2 {
+		context.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "添加失败",
+		})
+	}
 	todolist := &model.Todolist{
 		Id:     strconv.FormatInt(id, 10),
 		Title:  "",
@@ -96,10 +104,9 @@ func (toDoList ToDoList) UpdateTodoList(context *gin.Context) {
 		return
 	}
 	stuId := session.Get("username")
-	id := context.PostForm("id")
 	title := context.PostForm("title")
 	school := context.PostForm("school")
-	result := model.DB.Model(&model.Todolist{}).Where("id=? and stuId=? and school = ?", id, stuId, school).Update("title", title)
+	result := model.DB.Model(&model.Todolist{}).Where("stuId=? and school = ?", stuId, school).Update("title", title)
 	if result.Error != nil {
 		context.JSON(200, gin.H{
 			"code": 400,
@@ -116,10 +123,9 @@ func (toDoList ToDoList) UpdateTodoList(context *gin.Context) {
 }
 
 func (toDoList ToDoList) DeleteTodoList(context *gin.Context) {
-	id := context.PostForm("id")
 	school := context.PostForm("school")
 	stuId := context.PostForm("stuId")
-	result := model.DB.Table("todolist").Where("id = ? and stuId = ? and school = ?", id, stuId, school).Delete(&model.Todolist{})
+	result := model.DB.Table("todolist").Where("stuId = ? and school = ?", stuId, school).Delete(&model.Todolist{})
 	if result.Error != nil {
 		context.JSON(200, gin.H{
 			"code": 400,
