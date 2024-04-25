@@ -6,5 +6,6 @@ type CourseInfo struct {
 		JxbID string `json:"jxb_id"` //id
 		KchID string `json:"kch_id"` //id
 		Kcmc  string `json:"kcmc"`   //kcmc
+		Tjzt  string `json:"tjzt"`   //提交状态
 	} `json:"items"`
 }
