@@ -161,3 +161,50 @@ func (evaluateservice EvaluateService) Evaluate(context *gin.Context) {
 		"msg":  "评价成功",
 	})
 }
+
+func (evaluateservice EvaluateService) GetEvaluateInfo(context *gin.Context) {
+	if GetGnmkdmKey(context)["usertype"] == "teacher" {
+		context.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "暂时不支持老师账号评价!",
+			"data": nil,
+		})
+		context.Abort()
+		return
+	}
+	session := sessions.Default(context)
+	if session.Get("username") == nil {
+		context.JSON(200, gin.H{
+			"code": 400,
+			"data": nil,
+			"msg":  "请先登录!",
+		})
+		context.Abort()
+	}
+	c := model.UserCollector[session.Get("username").(string)]
+	courseInfo := model.CourseInfo{}
+	c.AllowURLRevisit = true
+	getinfourl := "https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xspjgl/xspj_cxXspjIndex.html?doType=query&gnmkdm=N401605"
+	c.OnResponse(func(r *colly.Response) {
+		err := json.Unmarshal(r.Body, &courseInfo)
+		if err != nil {
+			context.Abort()
+			return
+		}
+	})
+	info_data := map[string]string{
+		"nd":                     strconv.FormatInt(time.Now().Unix(), 10),
+		"queryModel.currentPage": "1",
+		"queryModel.showCount":   "500",
+		"queryModel.sortName":    "kcmc",
+		"queryModel.sortOrder":   "asc",
+		"time":                   "0",
+		"_search":                "false",
+	}
+	c.Post(getinfourl, info_data)
+	context.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "获取课程信息成功!",
+		"data": courseInfo,
+	})
+}
