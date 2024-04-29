@@ -11,6 +11,14 @@ import (
 
 func GetGnmkdmKey(context *gin.Context) map[string]string {
 	session := sessions.Default(context)
+	if session.Get("username") == nil {
+		context.JSON(200, gin.H{
+			"code": 400,
+			"data": nil,
+			"msg":  "请先登录!",
+		})
+		context.Abort()
+	}
 	c := model.UserCollector[session.Get("username").(string)].Clone()
 	c.AllowURLRevisit = true
 	gnmkdmkey := make(map[string]string, 4)
@@ -21,7 +29,6 @@ func GetGnmkdmKey(context *gin.Context) map[string]string {
 			gnmkdmkey["usertype"] = "teacher"
 		}
 	})
-	c.Visit("https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xtgl/index_initMenu.html?jsdm=")
 	c.OnResponse(func(r *colly.Response) {
 		var userinfo *regexp.Regexp
 		if gnmkdmkey["usertype"] == "student" {
@@ -36,6 +43,7 @@ func GetGnmkdmKey(context *gin.Context) map[string]string {
 		scores := regexp.MustCompile(`clickMenu\(&#39;(?P<key>[0-9a-zA-Z]+)&#39;,[^<>()]+,&#39;学生成绩查询&#39;`)
 		gnmkdmkey["score"] = scores.FindStringSubmatch(string(r.Body))[1]
 	})
+	c.Visit("https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xtgl/index_initMenu.html?jsdm=")
 	c.Visit("https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xtgl/index_initMenu.html?jsdm=")
 	return gnmkdmkey
 }
