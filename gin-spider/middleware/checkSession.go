@@ -33,6 +33,9 @@ func CheckSession() gin.HandlerFunc {
 				flag = true
 			}
 		})
+		c.OnError(func(r *colly.Response, e error) {
+			flag = false
+		})
 		c.Visit("https://webvpn.hjnu.edu.cn/http-82/736e6d702d6167656e74636f6d6d756ef7af70e6fd979c73c7cfa35e64a8ed2b/jwglxt/xtgl/index_initMenu.html?jsdm=")
 		if flag {
 			context.Next()
