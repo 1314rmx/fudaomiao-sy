@@ -5,29 +5,29 @@ import (
 	"encoding/base64"
 	"fmt"
 	"gin-spider/model"
-	"io/ioutil"
-	"strings"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
+	"io/ioutil"
+	"strings"
 )
 
 func CheckNeedCaptcha(context *gin.Context) {
+	defer model.Error(context)
 	username := context.Query("stuId")
 	if username == "" {
 		context.JSON(400, gin.H{
 			"code": 400,
-			"msg":  "学号为空，请输入学号",
+			"msg":  "请输入学号",
 			"data": nil,
 		})
 		context.Abort()
 	}
-	fmt.Println(username)
 	model.UserCollector[username] = colly.NewCollector(
+		colly.AllowURLRevisit(),
 		colly.UserAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36"),
 	)
 	model.UserCollector[username].Limit(&colly.LimitRule{
-		Parallelism: 100,
+		Parallelism: 500,
 	})
 	model.UserCollector[username].AllowURLRevisit = true
 
@@ -44,9 +44,7 @@ func CheckNeedCaptcha(context *gin.Context) {
 
 	checkNeedCaptcha_url := "https://webvpn.hjnu.edu.cn/https/736e6d702d6167656e74636f6d6d756efeb964a4bb9598689c84a24f3fe5e0/authserver/checkNeedCaptcha.htl?username=" + username
 	flag := false
-
 	model.UserCollector[username].OnResponse(func(r *colly.Response) {
-		//fmt.Println(string(r.Body))
 		if strings.Contains(string(r.Body), "true") {
 			flag = true
 		} else {
@@ -81,7 +79,7 @@ func CheckNeedCaptcha(context *gin.Context) {
 	model.UserCollector[username].Visit(captcha_imgurl)
 	context.JSON(200, gin.H{
 		"code": 200,
-		"msg":  "验证码show",
+		"msg":  "show",
 		"data": base64_str,
 	})
 }
