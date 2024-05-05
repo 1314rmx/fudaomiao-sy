@@ -47,15 +47,10 @@ func Initcolly(username string, pwd string, captcha string, context *gin.Context
 	//模拟登录
 	c.Post(hjurl, data)
 
-	var flag bool
-	c.OnResponse(func(r *colly.Response) {
-		//fmt.Println(string(r.Body))
-	})
+	flag := false
 	c.OnHTML("#btn_yd", func(e *colly.HTMLElement) {
 		if strings.Contains(e.Text, "已阅读") {
 			flag = true
-		} else {
-			flag = false
 		}
 	})
 	c.Visit("https://webvpn.hjnu.edu.cn/login?cas_login=true")

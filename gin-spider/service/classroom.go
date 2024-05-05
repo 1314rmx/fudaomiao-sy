@@ -21,15 +21,7 @@ var campus map[string]string = make(map[string]string)
 var lhmap map[string]string = make(map[string]string)
 
 func (classRoom ClassRoomService) GetClassRoom(context *gin.Context) {
-	session := sessions.Default(context)
-	if session.Get("username") == nil {
-		context.JSON(200, gin.H{
-			"code": 400,
-			"data": nil,
-			"msg":  "请先登录!",
-		})
-		context.Abort()
-	}
+	defer model.Error(context)
 	campusname := context.Query("campus")                    //校区，例如主校区
 	week, _ := strconv.Atoi(context.Query("week"))           //传第几周，例如
 	xqj := context.Query("xingqi")                           //传星期几
@@ -41,6 +33,7 @@ func (classRoom ClassRoomService) GetClassRoom(context *gin.Context) {
 		total += math.Pow(2, float64(start_jie-1))
 	}
 	zcd := int(math.Pow(2, float64(week-1)))
+	session := sessions.Default(context)
 	c := model.UserCollector[session.Get("username").(string)].Clone()
 	c.AllowURLRevisit = true
 	var parameter map[string]string = make(map[string]string)

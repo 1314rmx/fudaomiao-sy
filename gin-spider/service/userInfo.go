@@ -2,9 +2,7 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 	"gin-spider/model"
-
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
@@ -14,18 +12,7 @@ type UserInfoService struct {
 }
 
 func (userInfo UserInfoService) UserInfo(context *gin.Context) {
-	defer func() {
-		err := recover()
-		if err != nil {
-			context.JSON(200, gin.H{
-				"code": 400,
-				"data": nil,
-				"msg":  "发生错误，建议注销再登录!",
-			})
-			context.Abort()
-			return
-		}
-	}()
+	defer model.Error(context)
 	if GetGnmkdmKey(context)["usertype"] == "teacher" {
 		context.JSON(200, gin.H{
 			"code": 400,
@@ -37,18 +24,9 @@ func (userInfo UserInfoService) UserInfo(context *gin.Context) {
 	}
 	var semesterInfo model.SemesterInfo
 	session := sessions.Default(context)
-	if session.Get("username") == nil {
-		context.JSON(200, gin.H{
-			"code": 400,
-			"data": nil,
-			"msg":  "session为空，请先登录!",
-		})
-		context.Abort()
-	}
 	c := model.UserCollector[session.Get("username").(string)].Clone()
 	c.AllowURLRevisit = true
 	c.OnResponse(func(r *colly.Response) {
-		fmt.Println(string(r.Body))
 		err := json.Unmarshal(r.Body, &semesterInfo)
 		if err != nil {
 			context.JSON(200, gin.H{

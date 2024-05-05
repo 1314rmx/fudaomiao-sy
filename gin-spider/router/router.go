@@ -15,6 +15,7 @@ func App() *gin.Engine {
 	store := cookie.NewStore([]byte("1314rmx"))
 	app.Use(sessions.Sessions("sessionID", store))
 	app.Use(middleware.Cors())
+	app.Use(middleware.CheckSession())
 	InitRouter(app)
 	return app
 }

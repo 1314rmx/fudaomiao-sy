@@ -4,14 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"gin-spider/model"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
+	"github.com/gocolly/colly"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
-
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
-	"github.com/gocolly/colly"
 )
 
 type QueryService struct {
@@ -20,6 +19,7 @@ type QueryService struct {
 var wg sync.WaitGroup
 
 func (query QueryService) GetScoreList(context *gin.Context) {
+	defer model.Error(context)
 	if GetGnmkdmKey(context)["usertype"] == "teacher" {
 		context.JSON(200, gin.H{
 			"code": 400,
@@ -55,29 +55,10 @@ type semesterList struct {
 }
 
 func getSemester(context *gin.Context, semestersChan chan []semesterList, infoChan chan model.SemesterInfo) {
-	defer func() {
-		err := recover()
-		if err != nil {
-			context.JSON(200, gin.H{
-				"code": 400,
-				"data": nil,
-				"msg":  "发生错误，建议注销再登录!",
-			})
-			context.Abort()
-			return
-		}
-	}()
+	defer model.Error(context)
 	wg.Add(1)
 	var semesterInfo model.SemesterInfo
 	session := sessions.Default(context)
-	if session.Get("username") == nil {
-		context.JSON(200, gin.H{
-			"code": 400,
-			"data": nil,
-			"msg":  "session为空，请先登录!",
-		})
-		context.Abort()
-	}
 	c := model.UserCollector[session.Get("username").(string)].Clone()
 	c.AllowURLRevisit = true
 	c.OnResponse(func(r *colly.Response) {
@@ -130,7 +111,7 @@ func Query(context *gin.Context, scoreChan chan model.Stuscore) {
 			context.JSON(200, gin.H{
 				"code": 400,
 				"data": nil,
-				"msg":  "发生错误，建议注销再登录!",
+				"msg":  "发生错误!",
 			})
 			context.Abort()
 			return

@@ -3,30 +3,22 @@ package service
 import (
 	"encoding/json"
 	"gin-spider/model"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
+	"github.com/gocolly/colly"
 	"math"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
-	"github.com/gocolly/colly"
 )
 
 type CurriculumService struct {
 }
 
 func (curriculum CurriculumService) Curriculum(context *gin.Context) {
+	defer model.Error(context)
 	session := sessions.Default(context)
-	if session.Get("username") == nil {
-		context.JSON(200, gin.H{
-			"code": 400,
-			"data": nil,
-			"msg":  "session为空，请先登录!",
-		})
-		context.Abort()
-	}
 	c := model.UserCollector[session.Get("username").(string)].Clone()
 	var kb model.Courses
 	c.AllowURLRevisit = true
@@ -36,7 +28,7 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 			context.JSON(200, gin.H{
 				"code": 400,
 				"data": nil,
-				"msg":  "获取课表信息失败!",
+				"msg":  "获取学期信息失败!",
 			})
 			context.Abort()
 			return
@@ -146,6 +138,6 @@ func (curriculum CurriculumService) Curriculum(context *gin.Context) {
 	context.JSON(200, gin.H{
 		"code": 200,
 		"data": kb,
-		"msg":  "获取课表信息成功!",
+		"msg":  "获取学期信息成功!",
 	})
 }

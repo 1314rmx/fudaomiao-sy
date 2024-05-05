@@ -13,16 +13,8 @@ type ToDoList struct {
 }
 
 func (toDoList ToDoList) AddToDoList(context *gin.Context) {
+	defer model.Error(context)
 	session := sessions.Default(context)
-	if session.Get("username") == nil {
-		context.JSON(200, gin.H{
-			"code": 400,
-			"data": nil,
-			"msg":  "请先登录!",
-		})
-		context.Abort()
-		return
-	}
 	stuId := session.Get("username")
 	id := time.Now().Unix()
 	school := context.PostForm("school")
@@ -62,16 +54,8 @@ func (toDoList ToDoList) AddToDoList(context *gin.Context) {
 }
 
 func (toDoList ToDoList) GetToDoList(context *gin.Context) {
+	defer model.Error(context)
 	session := sessions.Default(context)
-	if session.Get("username") == nil {
-		context.JSON(200, gin.H{
-			"code": 400,
-			"data": nil,
-			"msg":  "请先登录!",
-		})
-		context.Abort()
-		return
-	}
 	stuId := session.Get("username")
 	school := context.Query("school")
 	var todolist []model.Todolist
@@ -93,16 +77,8 @@ func (toDoList ToDoList) GetToDoList(context *gin.Context) {
 }
 
 func (toDoList ToDoList) UpdateTodoList(context *gin.Context) {
+	defer model.Error(context)
 	session := sessions.Default(context)
-	if session.Get("username") == nil {
-		context.JSON(200, gin.H{
-			"code": 400,
-			"data": nil,
-			"msg":  "请先登录!",
-		})
-		context.Abort()
-		return
-	}
 	stuId := session.Get("username")
 	title := context.PostForm("title")
 	school := context.PostForm("school")
@@ -123,6 +99,7 @@ func (toDoList ToDoList) UpdateTodoList(context *gin.Context) {
 }
 
 func (toDoList ToDoList) DeleteTodoList(context *gin.Context) {
+	defer model.Error(context)
 	school := context.PostForm("school")
 	stuId := context.PostForm("stuId")
 	result := model.DB.Table("todolist").Where("stuId = ? and school = ?", stuId, school).Delete(&model.Todolist{})

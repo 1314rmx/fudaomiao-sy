@@ -31,6 +31,7 @@ func evaluate_spider(c *colly.Collector, url string, data map[string]string) {
 }
 
 func (evaluateservice EvaluateService) Evaluate(context *gin.Context) {
+	defer model.Error(context)
 	if GetGnmkdmKey(context)["usertype"] == "teacher" {
 		context.JSON(200, gin.H{
 			"code": 400,
@@ -163,6 +164,7 @@ func (evaluateservice EvaluateService) Evaluate(context *gin.Context) {
 }
 
 func (evaluateservice EvaluateService) GetEvaluateInfo(context *gin.Context) {
+	defer model.Error(context)
 	if GetGnmkdmKey(context)["usertype"] == "teacher" {
 		context.JSON(200, gin.H{
 			"code": 400,
@@ -173,14 +175,6 @@ func (evaluateservice EvaluateService) GetEvaluateInfo(context *gin.Context) {
 		return
 	}
 	session := sessions.Default(context)
-	if session.Get("username") == nil {
-		context.JSON(200, gin.H{
-			"code": 400,
-			"data": nil,
-			"msg":  "请先登录!",
-		})
-		context.Abort()
-	}
 	c := model.UserCollector[session.Get("username").(string)]
 	courseInfo := model.CourseInfo{}
 	c.AllowURLRevisit = true
