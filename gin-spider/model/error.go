@@ -10,7 +10,7 @@ func Error(context *gin.Context) {
 		context.JSON(200, gin.H{
 			"code": 400,
 			"data": nil,
-			"msg":  "发生错误!",
+			"msg":  "内部发生错误!",
 		})
 		context.Abort()
 		return
