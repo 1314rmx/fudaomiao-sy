@@ -18,7 +18,7 @@ func CheckSession() gin.HandlerFunc {
 		session := sessions.Default(context)
 		if session.Get("username") == nil || model.UserCollector[session.Get("username").(string)] == nil {
 			context.JSON(200, gin.H{
-				"code": 400,
+				"code": 401,
 				"data": nil,
 				"msg":  "请先登录!",
 			})
