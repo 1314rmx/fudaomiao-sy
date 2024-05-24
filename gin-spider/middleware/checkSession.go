@@ -2,10 +2,11 @@ package middleware
 
 import (
 	"gin-spider/model"
+	"strings"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
-	"strings"
 )
 
 func CheckSession() gin.HandlerFunc {
@@ -20,7 +21,7 @@ func CheckSession() gin.HandlerFunc {
 			context.JSON(200, gin.H{
 				"code": 401,
 				"data": nil,
-				"msg":  "请先登录!",
+				"msg":  "用户为空，请先登录!",
 			})
 			context.Abort()
 			return
@@ -44,7 +45,7 @@ func CheckSession() gin.HandlerFunc {
 			context.JSON(200, gin.H{
 				"code": 401,
 				"data": nil,
-				"msg":  "cookie失效!",
+				"msg":  "cookie失效，请重新登录!",
 			})
 			context.Abort()
 			return
