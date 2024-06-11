@@ -35,14 +35,15 @@ func Initcolly(username string, pwd string, captcha string, context *gin.Context
 	fmt.Println(enpwd)
 
 	data := map[string]string{
-		"username":  username,
-		"password":  enpwd,
-		"captcha":   captcha,
-		"_eventId":  "submit",
-		"_cllt":     "userNameLogin",
-		"dllt":      "generalLogin",
-		"lt":        "",
-		"execution": execution,
+		"username":   username,
+		"password":   enpwd,
+		"captcha":    captcha,
+		"rememberMe": "true",
+		"_eventId":   "submit",
+		"_cllt":      "userNameLogin",
+		"dllt":       "generalLogin",
+		"lt":         "",
+		"execution":  execution,
 	}
 	//模拟登录
 	c.Post(hjurl, data)
